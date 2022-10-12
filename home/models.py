@@ -1,16 +1,15 @@
 from django.db import models
-from wagtail.models import Page #à import pr faire fonc FieldPanel
-from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel, StreamFieldPanel
+from wagtail.models import Page
+from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel
 
 from streams import block
 from wagtail.core.fields import StreamField
 
-
 class HomePage(Page):
-    lead_text = models.CharField( #crée un champ de caractères
-    max_length = 140,
-    blank = True,
-    help_text = "sous-titre sous la bannière"
+    lead_text = models.CharField(
+        max_length=140,
+        blank=True,
+        help_text = "Sous-titre sous la bannière"
     )
     button = models.ForeignKey(
         'wagtailcore.Page',
@@ -34,11 +33,11 @@ class HomePage(Page):
         help_text="bannière arrière plan",
         on_delete = models.SET_NULL
     )
-# liste de tuple
+
     body = StreamField(
-        [("title", block.TitleBlock())
-        ], null=True, blank=True
-        )
+        [("title",
+         block.TitleBlock())], null=True, blank=True
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("lead_text"),
@@ -47,5 +46,3 @@ class HomePage(Page):
         FieldPanel("banner_background_image"),
         FieldPanel("body")
     ]
-
-
