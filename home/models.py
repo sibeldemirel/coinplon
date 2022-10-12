@@ -1,6 +1,9 @@
 from django.db import models
 from wagtail.models import Page #à import pr faire fonc FieldPanel
-from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel
+from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel, StreamFieldPanel
+
+from streams import block
+from wagtail.core.fields import StreamField
 
 
 class HomePage(Page):
@@ -31,13 +34,18 @@ class HomePage(Page):
         help_text="bannière arrière plan",
         on_delete = models.SET_NULL
     )
-
+# liste de tuple
+    body = StreamField(
+        [("title", block.TitleBlock())
+        ], null=True, blank=True
+        )
 
     content_panels = Page.content_panels + [
         FieldPanel("lead_text"),
         PageChooserPanel("button"),
         FieldPanel("button_text"),
-        FieldPanel("banner_background_image")
+        FieldPanel("banner_background_image"),
+        FieldPanel("body")
     ]
 
 
